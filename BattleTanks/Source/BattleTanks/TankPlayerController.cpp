@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Classes/Engine/World.h"
 
 
 ATank* ATankPlayerController::GetControlledTank() const
@@ -39,11 +40,11 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector OutHitLocation; //Out parametr
 	if (GetSightRayHitLocation(OutHitLocation)) //Has side effect, is going to line trace
 	{	
-		//TODO Tell controled tank to aim at this point
+		GetControlledTank()->AimAt(OutHitLocation);
 	}
 }
 
-//Get world location of linetrace throught crosshair, true if hits the landscape
+///Get world location of linetrace throught crosshair, true if hits the landscape
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
 	//Find crosshair position in pixels on the screen
@@ -55,11 +56,30 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FVector LookDirection; //Out parametr
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Position is: %s"), *LookDirection.ToString())
+		//Line-trace along the look direction, and see what we hit(up to max range)
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
-
-	//Line-trace along the look direction, and see what we hit(up to max range)
+	
 	return true;
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector & OutHitLocation) const
+{
+	FHitResult HitResult;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility))
+	{
+		//Set Hit Location
+		OutHitLocation = HitResult.Location;
+		return true;
+	}
+	OutHitLocation = FVector(0);
+	return false;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
@@ -69,6 +89,5 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 		ScreenLocation.X, 
 		ScreenLocation.Y, 
 		CameraWorldLocation, 
-		LookDirection);
-	
+		LookDirection);	
 }
