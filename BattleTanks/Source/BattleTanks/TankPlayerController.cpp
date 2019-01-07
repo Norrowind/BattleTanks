@@ -2,6 +2,7 @@
 
 #include "TankPlayerController.h"
 #include "Classes/Engine/World.h"
+#include "Public/Tank.h"
 
 
 ATank* ATankPlayerController::GetControlledTank() const
