@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Public/Tank.h"
+#include "TankMovementComponent.h"
 
 void ATankAIController::Tick(float DeltaTime)
 {
@@ -15,13 +16,14 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerTank)
 	{
-		//TODO Move Towards the player
-
+		//Move Towards the player
+		MoveToActor(PlayerTank);
+	
 		//Aim at the player
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 
 		//Fire if ready
-		ControlledTank->Fire(); //TODO Limit firing rate
+		ControlledTank->Fire();
 	}
 }
 

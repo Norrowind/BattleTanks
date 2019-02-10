@@ -10,6 +10,9 @@
  * 
  */
 
+
+
+
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {
@@ -18,5 +21,10 @@ class BATTLETANKS_API ATankAIController : public AAIController
 private:
 
 	virtual void Tick(float DeltaTime) override;
+
+	//How close can the AI tank get to the player
+	float AcceptanceRadius = 3000;
+
+
 	
 };
