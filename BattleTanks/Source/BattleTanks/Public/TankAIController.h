@@ -11,8 +11,6 @@
  */
 
 
-
-
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {
