@@ -12,7 +12,7 @@ ATank::ATank()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY:Construct C++ called!"))
 }
 
 void ATank::AimAt(FVector OutHitLocation)
@@ -46,6 +46,6 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//No need to protect pointers as added at construction
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY:BeginPlay C++ called!"))
 	
 }
