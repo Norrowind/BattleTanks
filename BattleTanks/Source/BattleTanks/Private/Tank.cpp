@@ -2,7 +2,6 @@
 
 #include "Public/Tank.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "Engine/World.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
@@ -17,15 +16,17 @@ ATank::ATank()
 
 void ATank::AimAt(FVector OutHitLocation)
 {
-	if (!TankAimingComponent) { return; }
+	if (!ensure (TankAimingComponent)) { return; }
 
 	TankAimingComponent->AimAt(OutHitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()
 {
+	if (!ensure(Barrel)) { return; }
+
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeinSeconds;
-	if (Barrel && isReloaded)
+	if (isReloaded)
 	{
 		//Spawn projectile at the socket location on the barrel
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>
@@ -33,7 +34,7 @@ void ATank::Fire()
 				ProjectileBlueprint,
 				Barrel->GetSocketLocation(FName("Projectile")),
 				Barrel->GetSocketRotation(FName("Projectile"))
-				);
+			);
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
