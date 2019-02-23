@@ -10,7 +10,6 @@
  * Responsible for helping player aim
  */
 
-class ATank;
 class UTankAimingComponent;
 
 
@@ -20,8 +19,6 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* GetControlledTank() const;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundingAimingComponent(UTankAimingComponent* AimCompRef);

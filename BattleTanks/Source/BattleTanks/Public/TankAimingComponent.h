@@ -19,6 +19,7 @@ enum class EFiringState:uint8
 class UTankBarrel;
 class UTankTurret;
 
+
 //Holds barrels properties and Elevate method
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
@@ -30,7 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankTurret* TurretToSet, UTankBarrel* BarrelToSet);
 
-	void AimAt(FVector OutHitLocation, float LaunchSpeed);
+	void AimAt(FVector OutHitLocation);
 	
 protected:
 	//Fireing state
@@ -45,5 +46,9 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	void MoveBarrelTowards(FVector AimDirection);
+
+	//Remove as soon as firing go to aiming component
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 7000;
 
 };

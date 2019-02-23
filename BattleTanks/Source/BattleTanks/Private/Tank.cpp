@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Public/Tank.h"
-#include "TankAimingComponent.h"
 #include "Engine/World.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
@@ -11,14 +10,14 @@ ATank::ATank()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY:Construct C++ called!"))
+
 }
 
-void ATank::AimAt(FVector OutHitLocation)
+// Called when the game starts or when spawned
+void ATank::BeginPlay()
 {
-	if (!ensure (TankAimingComponent)) { return; }
-
-	TankAimingComponent->AimAt(OutHitLocation, LaunchSpeed);
+	Super::BeginPlay();
+		
 }
 
 void ATank::Fire()
@@ -40,13 +39,3 @@ void ATank::Fire()
 	}
 }
 
-
-
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY:BeginPlay C++ called!"))
-	
-}
