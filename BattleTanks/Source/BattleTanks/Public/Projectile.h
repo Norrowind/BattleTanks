@@ -9,6 +9,8 @@
 class UProjectileMovementComponent;
 class UStaticMeshComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
+
 
 
 
@@ -30,6 +32,10 @@ public:
 	void LaunchProjectile(float Speed);
 
 private:
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
@@ -41,7 +47,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
 	UParticleSystemComponent* ImpactBlast = nullptr;
 
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
+	URadialForceComponent* ExplosionForse = nullptr;
+
+
 
 };

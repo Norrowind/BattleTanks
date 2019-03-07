@@ -4,6 +4,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Classes/Particles/ParticleSystemComponent.h"
 #include "Classes/Components/StaticMeshComponent.h"
+#include "Classes/PhysicsEngine/RadialForceComponent.h"
 #include "Engine/World.h"
 
 
@@ -27,12 +28,16 @@ AProjectile::AProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Movement Component"));
 	ProjectileMovement->bAutoActivate = false;
+
+	ExplosionForse = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Forse"));
+	
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
 	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 }
@@ -47,5 +52,6 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ExplosionForse->FireImpulse();
 }
 
