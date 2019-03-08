@@ -6,6 +6,7 @@
 #include "Classes/Components/StaticMeshComponent.h"
 #include "Classes/PhysicsEngine/RadialForceComponent.h"
 #include "Engine/World.h"
+#include "Public/TimerManager.h"
 
 
 // Sets default values
@@ -30,6 +31,7 @@ AProjectile::AProjectile()
 	ProjectileMovement->bAutoActivate = false;
 
 	ExplosionForse = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Forse"));
+	ExplosionForse->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	
 }
 
@@ -53,5 +55,14 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForse->FireImpulse();
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpires, DestroyDelay);
+
+}
+
+void AProjectile::OnTimerExpires()
+{
+	Destroy();
 }
 
