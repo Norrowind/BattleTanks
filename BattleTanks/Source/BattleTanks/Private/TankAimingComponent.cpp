@@ -37,6 +37,7 @@ int32 UTankAimingComponent::GetRoundsLeft() const
 
 void UTankAimingComponent::BeginPlay()
 {
+	Super::BeginPlay();
 	//So that first fire after initial reload
 	LastFireTime = FPlatformTime::Seconds();
 }
