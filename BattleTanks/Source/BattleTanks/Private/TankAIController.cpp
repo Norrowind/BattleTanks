@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TankMovementComponent.h"
 #include "TankAimingComponent.h"
+#include "Tank.h" //So we can implement OnDeath
 
 void ATankAIController::Tick(float DeltaTime)
 {
@@ -27,5 +28,24 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		AimingComponent->Fire();
 	}
+}
+
+void ATankAIController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)) { return; }
+		PossesedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossesedTankDeath);
+	}
+
+}
+
+void ATankAIController::OnPossesedTankDeath()
+{
+	auto PossesedTank = GetPawn();
+	if (!ensure(PossesedTank)) { return; }
+	PossesedTank->DetachFromControllerPendingDestroy();
 }
 
